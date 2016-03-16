@@ -11,6 +11,9 @@
 
 struct GLFWwindow;
 class Camera; 
+class Shapes;
+class Texture;
+class Sprite_Batch;
 
 class Application
 {
@@ -23,20 +26,19 @@ public:
 	void Draw();
 	void Update();
 
-	void CreateSquare(glm::vec3 _size, glm::vec3 _pos, bool _rotate);
-
 private:
 	GLFWwindow* m_pWindow;
 	Camera *m_camera;
+	Sprite_Batch *m_SB;
+	Shapes *m_shapes;
+	Texture *m_texture1;
 
 	int m_winWidth, m_winHeight;
 	float m_winRatio;
+	
 	float m_dt;
 	float m_prevTime;
-
 	double m_time;
-	glm::vec3 m_cameraPos;
-	glm::vec3 m_cameraTar;
 };
 
 #endif

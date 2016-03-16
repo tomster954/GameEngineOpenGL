@@ -16,7 +16,11 @@
 //GLM
 #include "glm/glm.hpp"
 
+//My includes
 #include "Camera.h"
+#include "Shapes.h"
+#include "Texture.h"
+#include "Sprite_Batch.h"
 
 static void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods)
 {
@@ -36,14 +40,36 @@ Application::Application()
 
 	InitialiseGLFW();
 
-	m_cameraPos = glm::vec3(0, 50, 100);
-	m_cameraTar = glm::vec3(0, 0, -1);
+	m_SB = new Sprite_Batch();
 
-	m_camera = new Camera(m_cameraPos, m_cameraTar, m_pWindow);
+	glm::vec3 m_cameraPos = glm::vec3(0, 0, 0);
+	glm::vec3 m_direction = glm::vec3(0, 0, -1);
+
+	m_camera = new Camera(m_cameraPos, m_direction, m_pWindow);
+	
+	m_shapes = new Shapes();
+	m_shapes->CreateShape(glm::vec3(10, 10, 10), glm::vec3(00, 00, -50), glm::vec3(0, 0, 0), false);
+	m_shapes->CreateShape(glm::vec3(10, 10, 10), glm::vec3(-50, 00, 00), glm::vec3(0, 0, 0), false);
+	m_shapes->CreateShape(glm::vec3(10, 10, 10), glm::vec3(00, 00, 50), glm::vec3(0, 0, 0), false);
+	m_shapes->CreateShape(glm::vec3(10, 10, 10), glm::vec3(50, 00, 00), glm::vec3(0, 0, 0), false);
+
+	m_texture1 = new Texture("./resources/Images/cherry.png", glm::vec2(50), glm::vec3(0, 0, -50));
 }
 
 Application::~Application()
 {
+	//Deleting textures
+	delete m_texture1;
+
+	//Deleting shapes
+	delete m_shapes;
+
+	//Deleting the camera
+	delete m_camera;
+
+	//Delete Sprite Batch
+	delete m_SB;
+
 	//Destroying window
 	glfwDestroyWindow(m_pWindow);
 
@@ -78,14 +104,16 @@ void Application::InitialiseGLFW()
 	glfwSetKeyCallback(m_pWindow, key_callback);
 
 	glEnable(GL_DEPTH_TEST);
+	glEnable(GL_BLEND);
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 }
 
 void Application::Run()
 {
 	while (!glfwWindowShouldClose(m_pWindow))
 	{
-		Draw();
 		Update();		
+		Draw();
 	}
 }
 
@@ -99,13 +127,14 @@ void Application::Draw()
 	glfwPollEvents();
 	
 	m_camera->Draw();
+	m_shapes->Draw();
+
+	//adds m_texture to the list of textures
+	m_SB->DrawSprite(m_texture1);
 	
-	//creating a square
-	CreateSquare(glm::vec3(10000, 1, 10000), glm::vec3(0, 0, 0), false);
-
-	CreateSquare(glm::vec3(10, 10, 10), glm::vec3(0, 0, 0), true);
-	CreateSquare(glm::vec3(10, 10, 10), glm::vec3(20, 20, 20), false);
-
+	//called last after all textures are passed in
+	m_SB->Draw();
+	
 	//swap buffers
 	glfwSwapBuffers(m_pWindow);
 }
@@ -117,89 +146,5 @@ void Application::Update()
 	m_prevTime = m_time;
 
 	m_camera->Update(m_dt);
-}
-
-void Application::CreateSquare(glm::vec3 _size, glm::vec3 _pos, bool _rotate)
-{
-	glMatrixMode(GL_MODELVIEW);
-	glLoadIdentity();
-
-	glTranslatef(_pos.x, _pos.y, _pos.z);
-
-	//rotate the square
-	if (_rotate == true)
-		glRotatef(m_time * -50.f, 0.f, 1.f, 1.f);
-
-#pragma region Cube Quads
-	float hBW = _size.x / 2; //Half Box Width
-	float hBH = _size.y / 2; //Half Box Height
-	float hBD = _size.z / 2; //Half Box Depth
-
-	glBegin(GL_QUADS);
-	//TOP - grey
-	glColor3f(0.4f, 0.4f, 0.4f);
-	glNormal3f(0.0f, 1.0f, 0.0f);
-	glVertex3f(-hBW, hBH, hBD);
-	glVertex3f(hBW, hBH, hBD);
-	glVertex3f(hBW, hBH, -hBD);
-	glVertex3f(-hBW, hBH, -hBD);
-
-	glEnd();
-
-	glBegin(GL_QUADS);
-	
-	//FRONT - ORANGE
-	glColor3f(1.0f, 0.5f, 0.0f);
-	glNormal3f(0.0f, 0.0f, -1.0f);
-	glVertex3f(hBW, hBH, hBD);
-	glVertex3f(hBW, -hBH, hBD);
-	glVertex3f(-hBW, -hBH, hBD);
-	glVertex3f(-hBW, hBH, hBD);
-
-	glEnd();
-
-	glBegin(GL_QUADS);
-	//RIGHT - BLUE
-	glColor3f(0.0f, 0.0f, 1.0f);
-	glNormal3f(1.0f, 0.0f, 0.0f);
-	glVertex3f(hBW, hBH, -hBD);
-	glVertex3f(hBW, hBH, hBD);
-	glVertex3f(hBW, -hBH, hBD);
-	glVertex3f(hBW, -hBH, -hBD);
-
-	glEnd();
-
-	glBegin(GL_QUADS);
-	//LEFT - GREEN
-	glColor3f(0.0f, 1.0f, 0.5f);
-	glNormal3f(-1.0f, 0.0f, 0.0f);
-	glVertex3f(-hBW, -hBH, hBD);
-	glVertex3f(-hBW, hBH, hBD);
-	glVertex3f(-hBW, hBH, -hBD);
-	glVertex3f(-hBW, -hBH, -hBD);
-
-	glEnd();
-
-	glBegin(GL_QUADS);
-	//BOTTOM - PURPLE
-	glColor3f(0.5f, 0.0f, 1.0f);
-	glNormal3f(0.0f, -1.0f, 0.0f);
-	glVertex3f(hBW, -hBH, hBD);
-	glVertex3f(-hBW, -hBH, hBD);
-	glVertex3f(-hBW, -hBH, -hBD);
-	glVertex3f(hBW, -hBH, -hBD);
-
-	glEnd();
-
-	glBegin(GL_QUADS);
-	//FRONT - YELLOW
-	glColor3f(1.0f, 1.0f, 0.0f);
-	glNormal3f(0.0f, 0.0f, 0.5f);
-	glVertex3f(hBW, -hBH, -hBD);
-	glVertex3f(hBW, hBH, -hBD);
-	glVertex3f(-hBW, hBH, -hBD);
-	glVertex3f(-hBW, -hBH, -hBD);
-
-	glEnd();
-#pragma endregion
+	m_shapes->Update(m_dt);
 }
