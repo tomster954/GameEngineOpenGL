@@ -15,21 +15,20 @@
 
 #include <cmath>
 
-Camera::Camera(glm::vec3 a_pos, glm::vec3 a_direction, GLFWwindow *a_pWindow)
+Camera::Camera()
 {
-	m_pWindow = a_pWindow;
-	m_cameraPosition = a_pos;
-	m_direction = a_direction;
-
-	Initialise();
 }
 
 Camera::~Camera()
 {
 }
 
-void Camera::Initialise()
+void Camera::Initialise(glm::vec3 a_pos, glm::vec3 a_direction, GLFWwindow *a_pWindow)
 {
+	m_pWindow = a_pWindow;
+	m_cameraPosition = a_pos;
+	m_direction = a_direction;
+
 	float aaa[9] =
 	{
 		0, 0, 0,
@@ -144,8 +143,6 @@ void Camera::AddRotation(char a_axis, float a_degrees)
 		float zgamma = glm::radians(90.0f + a_degrees);	// 90 degrees + the rotation - this will give 90 difference between x and z
 		float zalpha = glm::radians(a_degrees);		// how much we are rotating 
 
-		//TODO::set limits the how far up you can look
-
 		//if target.y > -0.9999f to prevent inverting
 		if (cos(zgamma) * up.y + cos(zalpha) * target.y < 0.999f &&
 			cos(zgamma) * up.y + cos(zalpha) * target.y > -0.999f)
@@ -186,7 +183,6 @@ void Camera::AddRotation(char a_axis, float a_degrees)
 	else if (a_axis == 'z' || a_axis == 'Z')
 	{ 
 		//if the selected axis is "Z"
-
 	}
 	else
 	{

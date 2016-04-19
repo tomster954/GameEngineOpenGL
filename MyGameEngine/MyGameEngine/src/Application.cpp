@@ -18,9 +18,13 @@
 
 //My includes
 #include "Camera.h"
-#include "Shapes.h"
-#include "Texture.h"
+
+//Sprites
 #include "Sprite_Batch.h"
+
+//States
+#include "State_Manager.h"
+#include "Play_State.h"
 
 static void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods)
 {
@@ -32,44 +36,31 @@ void error_callback(int error, const char* description)
 	fputs(description, stderr);
 }
 
-Application::Application()
+Application::Application() :
+m_SB(Sprite_Batch()),
+m_stateManager(State_Manager()),
+m_camera(Camera())
 {
+	//Initialise time values
 	m_time		= 0.0f;
 	m_dt		= 0.0f;
 	m_prevTime	= 0.0f;
 
+	//Initialise GLFW
 	InitialiseGLFW();
 
-	m_SB = new Sprite_Batch();
+	//Add States to the State Manager
+	m_stateManager.SetState("Play_State", new Play_State(this));
+	m_stateManager.PushState("Play_State");
 
+	//Initialise Camera
 	glm::vec3 m_cameraPos = glm::vec3(0, 0, 0);
 	glm::vec3 m_direction = glm::vec3(0, 0, -1);
-
-	m_camera = new Camera(m_cameraPos, m_direction, m_pWindow);
-	
-	m_shapes = new Shapes();
-	m_shapes->CreateShape(glm::vec3(10, 10, 10), glm::vec3(00, 00, -50), glm::vec3(0, 0, 0), false);
-	m_shapes->CreateShape(glm::vec3(10, 10, 10), glm::vec3(-50, 00, 00), glm::vec3(0, 0, 0), false);
-	m_shapes->CreateShape(glm::vec3(10, 10, 10), glm::vec3(00, 00, 50), glm::vec3(0, 0, 0), false);
-	m_shapes->CreateShape(glm::vec3(10, 10, 10), glm::vec3(50, 00, 00), glm::vec3(0, 0, 0), false);
-
-	m_texture1 = new Texture("./resources/Images/cherry.png", glm::vec2(50), glm::vec3(0, 0, -50));
+	m_camera.Initialise(m_cameraPos, m_direction, m_pWindow);
 }
 
 Application::~Application()
 {
-	//Deleting textures
-	delete m_texture1;
-
-	//Deleting shapes
-	delete m_shapes;
-
-	//Deleting the camera
-	delete m_camera;
-
-	//Delete Sprite Batch
-	delete m_SB;
-
 	//Destroying window
 	glfwDestroyWindow(m_pWindow);
 
@@ -126,14 +117,12 @@ void Application::Draw()
 	//Poll events
 	glfwPollEvents();
 	
-	m_camera->Draw();
-	m_shapes->Draw();
+	m_camera.Draw();
 
-	//adds m_texture to the list of textures
-	m_SB->DrawSprite(m_texture1);
+	m_stateManager.DrawStates(&m_SB);
 	
 	//called last after all textures are passed in
-	m_SB->Draw();
+	m_SB.Draw();
 	
 	//swap buffers
 	glfwSwapBuffers(m_pWindow);
@@ -145,6 +134,7 @@ void Application::Update()
 	m_dt = m_time - m_prevTime;
 	m_prevTime = m_time;
 
-	m_camera->Update(m_dt);
-	m_shapes->Update(m_dt);
+	m_camera.Update(m_dt);
+
+	m_stateManager.UpdateStates(m_dt);
 }

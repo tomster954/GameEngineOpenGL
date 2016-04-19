@@ -12,9 +12,9 @@ struct GLFWwindow;
 class Camera
 {
 public:
-	Camera(glm::vec3 a_pos, glm::vec3 a_direction, GLFWwindow *a_pWindow);
+	Camera();
 	~Camera();
-	void Initialise();
+	void Initialise(glm::vec3 a_pos, glm::vec3 a_direction, GLFWwindow *a_pWindow);
 	void Draw();
 	void Update(float a_dt);
 

@@ -9,12 +9,11 @@
 //GLM
 #include "glm/glm.hpp"
 
-struct GLFWwindow;
-class Camera; 
-class Shapes;
-class Texture;
-class Sprite_Batch;
+#include "Sprite_Batch.h"
+#include "State_Manager.h"
+#include "Camera.h"
 
+struct GLFWwindow;
 class Application
 {
 public:
@@ -25,13 +24,13 @@ public:
 	void Run();
 	void Draw();
 	void Update();
-
-private:
+	
 	GLFWwindow* m_pWindow;
-	Camera *m_camera;
-	Sprite_Batch *m_SB;
-	Shapes *m_shapes;
-	Texture *m_texture1;
+private:
+	
+	State_Manager m_stateManager;
+	Sprite_Batch m_SB;
+	Camera m_camera;
 
 	int m_winWidth, m_winHeight;
 	float m_winRatio;
