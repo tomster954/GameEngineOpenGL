@@ -34,28 +34,35 @@ void Map::ReadMapData(char *a_mapDataFile)
 
 void Map::SortMapData()
 {
-	char *needle = "width";
-	std::string width =	FindData(needle);
+	m_tileWidth = std::atoi(FindData("tilewidth=\"").c_str());
+	m_tileHeight = std::atoi(FindData("tileheight=\"").c_str());
 
+	m_mapWidth = std::atoi(FindData("width=\"").c_str());
+	m_mapHeight = std::atoi(FindData("height=\"").c_str());
 
+	m_tileSpacing = std::atoi(FindData("spacing=\"").c_str());
+	m_tileMargin = std::atoi(FindData("margin=\"").c_str());
 }
 
-std::string Map::FindData(char word[])
+std::string Map::FindData(std::string a_word)
 {
 	//TODO: find the end of the word width
-	int c;
-	std::vector<char>::iterator it;
-	it = std::search(m_fileData.begin(), m_fileData.end(), word, word + sizeof(word));
-
-	if (it != m_fileData.end())
-		c = it - m_fileData.begin();
-	else
-		std::cout << "needle1 not found\n";
-
+	int startChar;
+	int wordlength = a_word.length();
 	std::string result("");
-	for (int i = c + sizeof(word) + 2; m_fileData[i] != 34; i++)
-	{
+
+	//Searches for the passed in word
+	std::vector<char>::iterator it;
+	it = std::search(m_fileData.begin(), m_fileData.end(), a_word.c_str(), a_word.c_str() + wordlength);
+
+	//findes the next 
+	if (it != m_fileData.end())
+		startChar = it - m_fileData.begin() + wordlength;
+	else
+		return result;
+	
+	for (int i = startChar; m_fileData[i] != 34; i++)
 		result += m_fileData[i];
-	}
+
 	return result;
 }
