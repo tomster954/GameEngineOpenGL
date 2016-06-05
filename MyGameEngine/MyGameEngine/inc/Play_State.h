@@ -10,6 +10,7 @@
 class Shapes;
 class Texture;
 class Map_Manager;
+class Application;
 
 class Play_State : public IState
 {
@@ -26,6 +27,6 @@ private:
 
 	Shapes *m_shapes;
 	Texture *m_texture1;
-	Map_Manager *m_mapManager;
+	Application *m_pApp;
 };
 #endif

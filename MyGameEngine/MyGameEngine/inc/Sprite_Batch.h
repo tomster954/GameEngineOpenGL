@@ -7,7 +7,7 @@
 #define SPRITE_BATCH
 #include <list>
 
-class Texture;
+#include "Texture.h"
 
 class Sprite_Batch
 {

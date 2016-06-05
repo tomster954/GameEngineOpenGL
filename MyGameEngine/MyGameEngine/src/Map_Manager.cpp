@@ -1,6 +1,8 @@
 #include "Map_Manager.h"
 #include "Map.h"
 
+#include <vector>
+
 Map_Manager::Map_Manager()
 {
 
@@ -16,9 +18,9 @@ void Map_Manager::Update(float a_dt)
 
 }
 
-void Map_Manager::Draw(Sprite_Batch *a_SB)
+void Map_Manager::Draw(Sprite_Batch *a_SB, EMAPS a_mapID)
 {
-
+	m_maps[a_mapID].Draw(a_SB);
 }
 
 void Map_Manager::LoadNewMap(char *a_mapDataFile)

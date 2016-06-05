@@ -24,6 +24,10 @@
 
 //States
 #include "State_Manager.h"
+
+//Maps
+#include "Map_Manager.h"
+
 #include "Play_State.h"
 
 static void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods)
@@ -49,6 +53,10 @@ m_camera(Camera())
 	//Initialise GLFW
 	InitialiseGLFW();
 
+	//Initialise map manager
+	m_mapManager = new Map_Manager();
+	m_mapManager->LoadNewMap("./Resources/maps/map1_data.tmx");
+
 	//Add States to the State Manager
 	m_stateManager.SetState("Play_State", new Play_State(this));
 	m_stateManager.PushState("Play_State");
@@ -61,6 +69,9 @@ m_camera(Camera())
 
 Application::~Application()
 {
+	//deleting the map manager
+	delete m_mapManager;
+
 	//Destroying window
 	glfwDestroyWindow(m_pWindow);
 

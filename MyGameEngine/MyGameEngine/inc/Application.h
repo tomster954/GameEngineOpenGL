@@ -14,6 +14,8 @@
 #include "Camera.h"
 
 struct GLFWwindow;
+class Map_Manager;
+
 class Application
 {
 public:
@@ -25,12 +27,16 @@ public:
 	void Draw();
 	void Update();
 	
+	Map_Manager* GetMapManager(){ return m_mapManager; };
+
 	GLFWwindow* m_pWindow;
 private:
 	
 	State_Manager m_stateManager;
 	Sprite_Batch m_SB;
 	Camera m_camera;
+
+	Map_Manager *m_mapManager;
 
 	int m_winWidth, m_winHeight;
 	float m_winRatio;
