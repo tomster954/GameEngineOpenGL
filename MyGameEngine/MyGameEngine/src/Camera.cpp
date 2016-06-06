@@ -25,6 +25,7 @@ Camera::~Camera()
 
 void Camera::Initialise(glm::vec3 a_pos, glm::vec3 a_direction, GLFWwindow *a_pWindow)
 {
+	//vars
 	m_pWindow = a_pWindow;
 	m_cameraPosition = a_pos;
 	m_direction = a_direction;
@@ -35,15 +36,19 @@ void Camera::Initialise(glm::vec3 a_pos, glm::vec3 a_direction, GLFWwindow *a_pW
 		0, 1, 0,
 		0, 0, 1
 	};
+	
+	//Default camera rot
 	m_camRotation = glm::mat3(
 								1,0,0,
 								0,1,0,
 								0,0,1						
 								);
-
+	
+	//Default directions
 	m_up	= glm::vec3(0, 1, 0);
 	m_right = glm::vec3(1, 0, 0);
 
+	//vars
 	m_cameraMoveSpeed = 20;
 	m_cursorPos = glm::vec2(0, 0);
 	m_cursorLastPos = glm::vec2(0, 0);
@@ -59,14 +64,14 @@ void Camera::Draw()
 
 	//calculating perspective
 	glfwGetFramebufferSize(m_pWindow, &m_winWidth, &m_winHeight);
-	m_winRatio = (float)m_winWidth / (float)m_winWidth;
+	m_winRatio = (float)m_winWidth / (float)m_winHeight;
 
 	//Projection matrix
 	glMatrixMode(GL_PROJECTION);
 	glLoadIdentity();
 	gluPerspective(60, m_winRatio, 0.1, 1000);
 
-	//setting the look at based off the camera's pos and dir
+	//setting the look at, based off the camera's pos and dir
 	glm::vec3 facing = m_direction + m_cameraPosition;
 	gluLookAt(m_cameraPosition.x, m_cameraPosition.y, m_cameraPosition.z, facing.x, facing.y, facing.z, 0, 1, 0);
 }

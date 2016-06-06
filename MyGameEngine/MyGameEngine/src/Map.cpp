@@ -5,7 +5,7 @@
 #include <algorithm>
 
 #include "Sprite_Batch.h"
-//#include "Texture.h"
+#include "Tile.h"
 
 Map::Map(char *a_mapDataFile)
 {
@@ -22,7 +22,7 @@ void Map::Load(char *a_mapDataFile)
 	ReadMapData(a_mapDataFile);
 	SortMapData();
 
-	m_textureTileMap = new Texture("./resources/Maps/Tiles/map_tiles.png", glm::vec2(0, 0), glm::vec3(0, 0, -40));
+	LoadTiles();
 }
 
 void Map::Update()
@@ -35,6 +35,44 @@ void Map::Draw(Sprite_Batch *a_SB)
 	a_SB->DrawSprite(m_textureTileMap);
 	//TODO, maybe have a vector of the different textures for tiles and then take the texture from there when drawing tiles,
 	//	have a tile class for each tile and add them to a vector/list? also need to load the texture map to get tils from.
+}
+
+void Map::LoadTiles()
+{
+	m_textureTileMap = new Texture("./resources/Maps/Tiles/map_tiles.png", glm::vec2(0, 0), glm::vec3(0, 0, -40), glm::vec2(0, 1));	
+
+	//setting up vars
+	int tileCount = m_mapWidth * m_mapHeight;
+	int row = 0;
+	int col = 0;
+	int initialVal = 0;
+
+	//resizing the 2d vector of tiles
+	m_mapTiles.resize(m_mapHeight, std::vector<Tile*>(m_mapWidth, new Tile()));
+
+	//Filling the 2d vector of tiles
+	for (int i = 0; i < m_rawTileData.size(); i++)
+	{
+		//if we reach a new line
+		if (m_rawTileData[i] == '\n')
+		{
+			row++;
+			col = 0;
+			continue;
+		}
+
+		//If we reach a comma move to the next colomn
+		if (m_rawTileData[i] == ',')
+		{
+			col++;
+			continue;
+		}
+
+		//TODO Fill tile data
+
+		//setting the tile id to the 2d vector
+		//m_mapTiles[row][col] = m_rawTileData[i] - '0';
+	}
 }
 
 void Map::ReadMapData(char *a_mapDataFile)
@@ -65,6 +103,8 @@ void Map::SortMapData()
 
 	m_tileSpacing = std::atoi(FindData("spacing=\"", '"').c_str());
 	m_tileMargin = std::atoi(FindData("margin=\"", '"').c_str());
+
+	std::string m_rawTileData = FindData("<data encoding=\"csv\">\n", '<').c_str();
 }
 
 std::string Map::FindData(std::string a_word, char a_endChar)

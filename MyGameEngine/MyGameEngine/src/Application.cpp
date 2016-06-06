@@ -53,7 +53,7 @@ m_camera(Camera())
 	//Initialise GLFW
 	InitialiseGLFW();
 
-	//Initialise map manager
+	//Initialise map manager and load a map
 	m_mapManager = new Map_Manager();
 	m_mapManager->LoadNewMap("./Resources/maps/map1_data.tmx");
 
@@ -89,7 +89,7 @@ void Application::InitialiseGLFW()
 		exit(EXIT_FAILURE);
 
 	//Create the window
-	m_pWindow = glfwCreateWindow(640, 480, "My Engine", NULL, NULL);
+	m_pWindow = glfwCreateWindow(1024, 576, "My Engine", NULL, NULL);
 	if (!m_pWindow)
 	{
 		glfwTerminate();
@@ -99,8 +99,7 @@ void Application::InitialiseGLFW()
 	//Make this window the current context
 	glfwMakeContextCurrent(m_pWindow);
 
-	//set the swap intervals the a reasonable amount
-
+	//set the swap intervals to a reasonable amount
 	glfwSwapInterval(1);
 	//Setting key call back function
 	glfwSetKeyCallback(m_pWindow, key_callback);

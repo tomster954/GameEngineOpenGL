@@ -8,7 +8,7 @@
 #include <vector>
 class Sprite_Batch;
 class Texture;
-
+class Tile;
 class Map
 {
 public:
@@ -17,10 +17,14 @@ public:
 
 	void Load(char *a_mapDataFile);
 
+	//Update
 	void Update();
 
 	//Draws this specific map
 	void Draw(Sprite_Batch *a_pSB);
+
+	//Loads all tiles for the map
+	void LoadTiles();
 
 private:
 	void ReadMapData(char *a_mapDataFile);		//Reads in the map file 
@@ -35,6 +39,7 @@ private:
 	unsigned int m_tileSpacing, m_tileMargin;	//In Pixels
 
 	std::vector<char> m_fileData;				//Entire file of map data
-	std::vector<int> m_mapTileData;				//just the tile data from m_fileData
+	std::string m_rawTileData;					//A string of all the tile IDs
+	std::vector<std::vector<Tile*>> m_mapTiles;//just the tile data from m_fileData
 };
 #endif

@@ -21,18 +21,23 @@ void Sprite_Batch::Draw()
 	for (auto itr = m_textures.begin(); itr != m_textures.end(); ++itr)
 	{
 		//Vars
+		float hTW, hTH;				//Half Texture Windth / Height
 		glm::vec2 size;				//Texture size
 		glm::vec2 TL, TR, BL, BR;	//Top left, top right, bot left, bot right
 		glm::vec3 pos;				//Texture Pos
 		GLuint ID;					//Texture ID
+		
+		//Values not between 0 and 1 yet...
+		TL = glm::vec2((*itr)->m_textCoordTL.x, (*itr)->m_textCoordTL.y);	//Default: (0, 1)
+		TR = glm::vec2((*itr)->m_textCoordTR.x, (*itr)->m_textCoordTR.y);	//Default: (1, 1);
+		BR = glm::vec2((*itr)->m_textCoordBR.x, (*itr)->m_textCoordBR.y);	//Default: (1, 0);
+		BL = glm::vec2((*itr)->m_textCoordBL.x, (*itr)->m_textCoordBL.y);	//Default: (0, 0);
 
-		float hTW, hTH;				//Half Texture Windth / Height
-
-		TL = glm::vec2(0, 1);
-		TR = glm::vec2(1, 1);
-		BR = glm::vec2(1, 0);
-		BL = glm::vec2(0, 0);
-
+		//Setting vars
+		size = (*itr)->m_size;
+		hTW = size.x / 2;
+		hTH = size.y / 2;
+		pos = (*itr)->m_pos;
 		ID = (*itr)->m_textureID;
 
 		glMatrixMode(GL_MODELVIEW);
@@ -43,30 +48,12 @@ void Sprite_Batch::Draw()
 		glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
 
 		glBindTexture(GL_TEXTURE_2D, ID);
-
-		//if the size of the texture is 0 get the actual size of the texture
-		if ((*itr)->m_size.x <= 0 || (*itr)->m_size.y <= 0)
-		{
-			GLint w, h;
-			glGetTexLevelParameteriv(GL_TEXTURE_2D, 0, GL_TEXTURE_WIDTH, &w);
-			glGetTexLevelParameteriv(GL_TEXTURE_2D, 0, GL_TEXTURE_HEIGHT, &h);
-
-			(*itr)->m_size.x = w;
-			(*itr)->m_size.y = h;
-		}
-
-		//Setting vars
-		size = (*itr)->m_size;
-		pos = (*itr)->m_pos;
-
-		hTW = size.x / 2;
-		hTH = size.y / 2;
-
+		
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
 
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 
 		glBegin(GL_QUADS);
 		glTexCoord2f(TL.x, TL.y);		glVertex2f(-hTW, -hTH);
@@ -75,7 +62,6 @@ void Sprite_Batch::Draw()
 		glTexCoord2f(BL.x, BL.y);		glVertex2f(-hTW, hTH);
 		glEnd();
 
-		//glDisable(GL_BLEND);
 		glDisable(GL_TEXTURE_2D);
 	}
 
@@ -85,5 +71,7 @@ void Sprite_Batch::Draw()
 
 void Sprite_Batch::DrawSprite(Texture *a_texture)
 {
+	//TODO: maybe instead of clearing all textures at the end we check the 
+	//		incoming texture agains the ones we already have and add it if its not there
 	m_textures.push_back(a_texture);
 }
