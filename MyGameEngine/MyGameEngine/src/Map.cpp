@@ -33,13 +33,20 @@ void Map::Update()
 void Map::Draw(Sprite_Batch *a_SB)
 {
 	a_SB->DrawSprite(m_textureTileMap);
-	//TODO, maybe have a vector of the different textures for tiles and then take the texture from there when drawing tiles,
-	//	have a tile class for each tile and add them to a vector/list? also need to load the texture map to get tils from.
+	
+	//loops rows
+	for (int i = 0; i < m_mapHeight; i++)
+	{
+		for (int j = 0; j < m_mapWidth; j++)
+		{
+			m_mapTiles[i][j]->Draw(a_SB);
+		}
+	}
 }
 
 void Map::LoadTiles()
 {
-	m_textureTileMap = new Texture("./resources/Maps/Tiles/map_tiles.png", glm::vec2(0, 0), glm::vec3(0, 0, -40), glm::vec2(0, 1));	
+	m_textureTileMap = new Texture("./resources/Maps/Tiles/map_tiles.png", glm::vec2(0), glm::vec2(0), glm::vec3(0, 0, -500), glm::vec2(0, 1));
 
 	//setting up vars
 	int tileCount = m_mapWidth * m_mapHeight;
@@ -68,10 +75,8 @@ void Map::LoadTiles()
 			continue;
 		}
 
-		//TODO Fill tile data
-
-		//setting the tile id to the 2d vector
-		//m_mapTiles[row][col] = m_rawTileData[i] - '0';
+		int tileID = m_rawTileData[i] - '0';
+		m_mapTiles[row][col] = new Tile(m_textureTileMap, tileID, glm::vec2(32), glm::vec2(31), glm::vec3(32 * col, -32 * row, -100));
 	}
 }
 
@@ -95,6 +100,8 @@ void Map::ReadMapData(char *a_mapDataFile)
 
 void Map::SortMapData()
 {
+	m_rawTileData = FindData("<data encoding=\"csv\">\n", '<').c_str();
+
 	m_tileWidth = std::atoi(FindData("tilewidth=\"", '"').c_str());
 	m_tileHeight = std::atoi(FindData("tileheight=\"", '"').c_str());
 
@@ -103,8 +110,6 @@ void Map::SortMapData()
 
 	m_tileSpacing = std::atoi(FindData("spacing=\"", '"').c_str());
 	m_tileMargin = std::atoi(FindData("margin=\"", '"').c_str());
-
-	std::string m_rawTileData = FindData("<data encoding=\"csv\">\n", '<').c_str();
 }
 
 std::string Map::FindData(std::string a_word, char a_endChar)

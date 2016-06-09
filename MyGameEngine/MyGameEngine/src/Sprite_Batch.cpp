@@ -34,7 +34,7 @@ void Sprite_Batch::Draw()
 		BL = glm::vec2((*itr)->m_textCoordBL.x, (*itr)->m_textCoordBL.y);	//Default: (0, 0);
 
 		//Setting vars
-		size = (*itr)->m_size;
+		size = (*itr)->m_quadSize;
 		hTW = size.x / 2;
 		hTH = size.y / 2;
 		pos = (*itr)->m_pos;
