@@ -32,9 +32,7 @@ void Map::Update()
 }
 
 void Map::Draw(Sprite_Batch *a_SB)
-{
-	a_SB->DrawSprite(m_tileSheet.m_texture);
-	
+{	
 	//loops rows
 	for (int i = 0; i < m_mapHeight; i++)
 	{
@@ -48,8 +46,6 @@ void Map::Draw(Sprite_Batch *a_SB)
 
 void Map::LoadTiles()
 {
-	m_tileSheet.m_texture = new Texture("./resources/Maps/Tiles/map_tiles.png", glm::vec2(0), glm::vec2(0), glm::vec3(0, 0, -500), glm::vec2(0, 1));
-
 	//setting up vars
 	int tileCount = m_mapWidth * m_mapHeight;
 	int row = 0;
@@ -145,6 +141,11 @@ void Map::SortMapData()
 
 	//calculating rows in the tile sheet off read data
 	m_tileSheet.rows = m_tileSheet.tileCount / m_tileSheet.columns;
+
+	//load the tile map assosiated with this map
+	std::string filelocation = "./resources/Maps/";
+	filelocation.append(FindData("image source=\"", '\"'));
+	m_tileSheet.m_texture = new Texture(_strdup(filelocation.c_str()), glm::vec2(0), glm::vec2(0), glm::vec3(0, 0, -500), glm::vec2(0, 1));
 }
 
 std::string Map::FindData(std::string a_word, char a_endChar)

@@ -62,7 +62,7 @@ m_camera(Camera())
 	m_stateManager.PushState("Play_State");
 
 	//Initialise Camera
-	glm::vec3 m_cameraPos = glm::vec3(0, 0, 100);
+	glm::vec3 m_cameraPos = glm::vec3(0, 0, 250);
 	glm::vec3 m_direction = glm::vec3(0, 0, -1);
 	m_camera.Initialise(m_cameraPos, m_direction, m_pWindow);
 }

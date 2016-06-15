@@ -49,7 +49,7 @@ void Camera::Initialise(glm::vec3 a_pos, glm::vec3 a_direction, GLFWwindow *a_pW
 	m_right = glm::vec3(1, 0, 0);
 
 	//vars
-	m_cameraMoveSpeed = 20;
+	m_cameraMoveSpeed = 10;
 	m_cursorPos = glm::vec2(0, 0);
 	m_cursorLastPos = glm::vec2(0, 0);
 	m_rotation = 0;
@@ -90,10 +90,10 @@ void Camera::KeyInputHandling()
 
 	//move camera with WASD
 	if (glfwGetKey(m_pWindow, GLFW_KEY_W) == GLFW_PRESS)
-		m_cameraPosition += speed * m_direction;
+		m_cameraPosition += speed * m_up;
 
 	if (glfwGetKey(m_pWindow, GLFW_KEY_S) == GLFW_PRESS)
-		m_cameraPosition -= speed * m_direction;
+		m_cameraPosition += speed * -m_up;
 	
 	if (glfwGetKey(m_pWindow, GLFW_KEY_A) == GLFW_PRESS)
 		m_cameraPosition -= glm::normalize(glm::cross(m_direction, m_up)) * speed;
@@ -101,22 +101,16 @@ void Camera::KeyInputHandling()
 	if (glfwGetKey(m_pWindow, GLFW_KEY_D) == GLFW_PRESS)
 		m_cameraPosition += glm::normalize(glm::cross(m_direction, m_up)) * speed;
 
-	//higher and lower 
-	if (glfwGetKey(m_pWindow, GLFW_KEY_Q) == GLFW_PRESS)
-		m_cameraPosition += speed * m_up;
-	if (glfwGetKey(m_pWindow, GLFW_KEY_E) == GLFW_PRESS)
-		m_cameraPosition += speed * -m_up;
-
 	float cameraRotSpeed = 100 * m_dt;
-
-	if (glfwGetKey(m_pWindow, GLFW_KEY_LEFT) == GLFW_PRESS)
-		AddRotation('Y', -cameraRotSpeed);
-	if (glfwGetKey(m_pWindow, GLFW_KEY_RIGHT) == GLFW_PRESS)
-		AddRotation('Y', cameraRotSpeed);
-	if (glfwGetKey(m_pWindow, GLFW_KEY_UP) == GLFW_PRESS)
-		AddRotation('X', cameraRotSpeed);
-	if (glfwGetKey(m_pWindow, GLFW_KEY_DOWN) == GLFW_PRESS)
-		AddRotation('X', -cameraRotSpeed);
+	//camera rotation off arrow keys
+	//if (glfwGetKey(m_pWindow, GLFW_KEY_LEFT) == GLFW_PRESS)
+	//	AddRotation('Y', -cameraRotSpeed);
+	//if (glfwGetKey(m_pWindow, GLFW_KEY_RIGHT) == GLFW_PRESS)
+	//	AddRotation('Y', cameraRotSpeed);
+	//if (glfwGetKey(m_pWindow, GLFW_KEY_UP) == GLFW_PRESS)
+	//	AddRotation('X', cameraRotSpeed);
+	//if (glfwGetKey(m_pWindow, GLFW_KEY_DOWN) == GLFW_PRESS)
+	//	AddRotation('X', -cameraRotSpeed);
 }
 
 void Camera::MouseInputHandling()

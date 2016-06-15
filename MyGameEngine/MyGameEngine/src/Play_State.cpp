@@ -24,13 +24,13 @@ void Play_State::Initialise()
 {
 	//Creating some shapes to see
 	m_shapes = new Shapes();
-	m_shapes->CreateShape(glm::vec3(10, 10, 10), glm::vec3(00, 00, -50), glm::vec3(0, 0, 0), false);
-	m_shapes->CreateShape(glm::vec3(10, 10, 10), glm::vec3(-50, 00, 00), glm::vec3(0, 0, 0), false);
-	m_shapes->CreateShape(glm::vec3(10, 10, 10), glm::vec3(00, 00, 50), glm::vec3(0, 0, 0), false);
-	m_shapes->CreateShape(glm::vec3(10, 10, 10), glm::vec3(50, 00, 00), glm::vec3(0, 0, 0), false);
+	//m_shapes->CreateShape(glm::vec3(10, 10, 10), glm::vec3(00, 00, -50), glm::vec3(0, 0, 0), false);
+	//m_shapes->CreateShape(glm::vec3(10, 10, 10), glm::vec3(-50, 00, 00), glm::vec3(0, 0, 0), false);
+	//m_shapes->CreateShape(glm::vec3(10, 10, 10), glm::vec3(00, 00, 50), glm::vec3(0, 0, 0), false);
+	//m_shapes->CreateShape(glm::vec3(10, 10, 10), glm::vec3(50, 00, 00), glm::vec3(0, 0, 0), false);
 
 	//Initialise Textures
-	m_texture1 = new Texture("./resources/Images/cherry.png", glm::vec2(50), glm::vec2(0), glm::vec3(0, 0, -50), glm::vec2(0.5f, 0.5f));
+	m_texture1 = new Texture("./resources/Images/cherry.png", glm::vec2(10), glm::vec2(0), glm::vec3(0, 0, 1), glm::vec2(0.5f, 0.5f));
 }
 
 void Play_State::LoadMap()
