@@ -1,5 +1,6 @@
 #include "Map.h"
 
+#include <string>
 #include <iostream>
 #include <fstream>
 #include <algorithm>
@@ -10,11 +11,11 @@
 Map::Map(char *a_mapDataFile)
 {
 	Load(a_mapDataFile);
-	
 }
 
 Map::~Map()
 {
+	delete m_tileSheet.m_texture;
 }
 
 void Map::Load(char *a_mapDataFile)
@@ -32,13 +33,14 @@ void Map::Update()
 
 void Map::Draw(Sprite_Batch *a_SB)
 {
-	a_SB->DrawSprite(m_textureTileMap);
+	a_SB->DrawSprite(m_tileSheet.m_texture);
 	
 	//loops rows
 	for (int i = 0; i < m_mapHeight; i++)
 	{
 		for (int j = 0; j < m_mapWidth; j++)
 		{
+			//todo only draw tiles on screen
 			m_mapTiles[i][j]->Draw(a_SB);
 		}
 	}
@@ -46,7 +48,7 @@ void Map::Draw(Sprite_Batch *a_SB)
 
 void Map::LoadTiles()
 {
-	m_textureTileMap = new Texture("./resources/Maps/Tiles/map_tiles.png", glm::vec2(0), glm::vec2(0), glm::vec3(0, 0, -500), glm::vec2(0, 1));
+	m_tileSheet.m_texture = new Texture("./resources/Maps/Tiles/map_tiles.png", glm::vec2(0), glm::vec2(0), glm::vec3(0, 0, -500), glm::vec2(0, 1));
 
 	//setting up vars
 	int tileCount = m_mapWidth * m_mapHeight;
@@ -68,15 +70,42 @@ void Map::LoadTiles()
 			continue;
 		}
 
-		//If we reach a comma move to the next colomn
 		if (m_rawTileData[i] == ',')
 		{
 			col++;
 			continue;
 		}
 
-		int tileID = m_rawTileData[i] - '0';
-		m_mapTiles[row][col] = new Tile(m_textureTileMap, tileID, glm::vec2(32), glm::vec2(31), glm::vec3(32 * col, -32 * row, -100));
+		//finds how many digits are in the current ID
+		int digits = 0;
+		int tileID = 1;
+		for (int j = i; j < m_rawTileData.size(); j++)
+		{
+			digits++;
+			if (m_rawTileData[j + 1] == ',' || m_rawTileData[j + 1] == '\n')
+			{
+				//Takes the tiles id from the string and coverts it into an int
+				tileID = std::stoi(m_rawTileData.substr(i, digits));
+				i = j;
+				break;
+			}
+		}
+			
+		//setting up the next tiles vars
+		glm::vec2 quadSize = glm::vec2(m_tileSheet.tileWidth, m_tileSheet.tileHeight);
+		glm::vec2 portionSize = glm::vec2(m_tileSheet.tileWidth, m_tileSheet.tileHeight);
+		glm::vec2 topLeftPx = FindTileTopLeft(tileID);
+
+		//Makes the middle of the map the middle of the screen
+		float x, y;
+		x = m_mapWidth * portionSize.x / 2;
+		y = m_mapHeight * portionSize.y / 2;
+		glm::vec3 worldPos = glm::vec3(quadSize.x * col - x, -quadSize.y * row + y, 0);
+
+		//creat a new tile and add it to the other tiles
+		Tile *tile = new Tile();
+		tile->Initialise(m_tileSheet.m_texture, tileID, quadSize, portionSize, worldPos, topLeftPx);
+		m_mapTiles[row][col] = tile;
 	}
 }
 
@@ -102,14 +131,20 @@ void Map::SortMapData()
 {
 	m_rawTileData = FindData("<data encoding=\"csv\">\n", '<').c_str();
 
-	m_tileWidth = std::atoi(FindData("tilewidth=\"", '"').c_str());
-	m_tileHeight = std::atoi(FindData("tileheight=\"", '"').c_str());
+	m_tileSheet.tileWidth = std::atoi(FindData("tilewidth=\"", '"').c_str());
+	m_tileSheet.tileHeight = std::atoi(FindData("tileheight=\"", '"').c_str());
 
 	m_mapWidth = std::atoi(FindData("width=\"", '"').c_str());
 	m_mapHeight = std::atoi(FindData("height=\"", '"').c_str());
 
-	m_tileSpacing = std::atoi(FindData("spacing=\"", '"').c_str());
-	m_tileMargin = std::atoi(FindData("margin=\"", '"').c_str());
+	m_tileSheet.tileSpacing = std::atoi(FindData("spacing=\"", '"').c_str());
+	m_tileSheet.tileMargin = std::atoi(FindData("margin=\"", '"').c_str());
+
+	m_tileSheet.columns = std::atoi(FindData("columns=\"", '"').c_str());
+	m_tileSheet.tileCount = std::atoi(FindData("tilecount=\"", '"').c_str());
+
+	//calculating rows in the tile sheet off read data
+	m_tileSheet.rows = m_tileSheet.tileCount / m_tileSheet.columns;
 }
 
 std::string Map::FindData(std::string a_word, char a_endChar)
@@ -134,4 +169,34 @@ std::string Map::FindData(std::string a_word, char a_endChar)
 		result += m_fileData[i];
 
 	return result;
+}
+
+glm::vec2 Map::FindTileTopLeft(int a_tileID)
+{
+	glm::vec2 pos = glm::vec2(0);
+
+	//X
+	//------------------------------------
+	int col = a_tileID;
+
+	//finding the column that this tile sits
+	for (col; col > m_tileSheet.columns;)
+		col -= m_tileSheet.columns;
+
+	pos.x += m_tileSheet.tileMargin;
+	pos.x += ((col - 1) * m_tileSheet.tileWidth) + ((col - 1) * m_tileSheet.tileSpacing);
+	//------------------------------------
+
+	//Y
+	//------------------------------------
+	int row;
+	row = (a_tileID - 1) / m_tileSheet.columns;
+	
+	pos.y += m_tileSheet.tileMargin;
+	pos.y += (row * m_tileSheet.tileHeight) + (row * m_tileSheet.tileSpacing);
+	
+
+	//------------------------------------
+
+	return pos;
 }

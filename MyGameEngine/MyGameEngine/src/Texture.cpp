@@ -4,12 +4,13 @@
 
 #include "glm/glm.hpp"
 
-Texture::Texture(char *a_fileName, glm::vec2 a_quadSize, glm::vec2 a_portionSize, glm::vec3 a_pos, glm::vec2 a_textCoord)
+Texture::Texture(char *a_fileName, glm::vec2 a_quadSize, glm::vec2 a_portionSize, glm::vec3 a_pos, glm::vec2 a_topLeftPx)
 {
 	m_textureID = 0;
 	m_quadSize = a_quadSize;
 	m_portionSize = a_portionSize;
 	m_pos = a_pos;
+	m_topLeftPx = a_topLeftPx;
 
 	//Default Texture Coords
 	m_textCoordTL = glm::vec2(0, 1);
@@ -45,22 +46,17 @@ Texture::Texture(char *a_fileName, glm::vec2 a_quadSize, glm::vec2 a_portionSize
 	CalculateTextCoords();
 }
 
-Texture::Texture(Texture *a_texture, glm::vec2 a_quadSize, glm::vec2 a_portionSize, glm::vec3 a_pos, glm::vec2 a_textCoord)
+Texture::Texture(Texture *a_texture, glm::vec2 a_quadSize, glm::vec2 a_portionSize, glm::vec3 a_pos, glm::vec2 a_topLeftPx)
 {
 	//settting this texture vars
 	m_textureID		= a_texture->m_textureID;
 	m_quadSize		= a_quadSize;
 	m_portionSize	= a_portionSize;
 	m_pos			= a_pos;
+	m_topLeftPx		= a_topLeftPx;
 
 	m_originalImageSize.x = a_texture->m_originalImageSize.x;
 	m_originalImageSize.y = a_texture->m_originalImageSize.y;
-
-	//Texture Coords of the original texture but will be recalculated
-	m_textCoordTL = a_texture->m_textCoordTL;
-	m_textCoordTR = a_texture->m_textCoordTR;
-	m_textCoordBR = a_texture->m_textCoordBR;
-	m_textCoordBL = a_texture->m_textCoordBL;
 
 	//if the portion of the image being loaded has a size of 0 get the full image
 	if (m_portionSize.x <= 0 || m_portionSize.y <= 0)
@@ -87,6 +83,16 @@ void Texture::GetOriginalImageSize()
 
 void Texture::CalculateTextCoords()
 {
-	//Todo: Calcualte text coords and figure out what attributes to pass in for the text coords
-	//	Clean this file up too
+	//Confusing because images are 0,0 at the top left and opengl is 0,0 at bottom left :'(
+	m_textCoordTL.x = m_topLeftPx.x / m_originalImageSize.x;
+	m_textCoordBL.y = m_topLeftPx.y / m_originalImageSize.y;
+
+	m_textCoordTR.x = (m_topLeftPx.x + m_portionSize.x) / m_originalImageSize.x;
+	m_textCoordBR.y = m_topLeftPx.y / m_originalImageSize.y;
+
+	m_textCoordBR.x = (m_topLeftPx.x + m_portionSize.x) / m_originalImageSize.x;
+	m_textCoordTR.y = (m_topLeftPx.y + m_portionSize.y) / m_originalImageSize.y;
+
+	m_textCoordBL.x = m_topLeftPx.x / m_originalImageSize.x;
+	m_textCoordTL.y = (m_topLeftPx.y + m_portionSize.y) / m_originalImageSize.y;
 }

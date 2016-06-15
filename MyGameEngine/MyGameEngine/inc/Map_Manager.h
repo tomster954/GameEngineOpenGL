@@ -29,6 +29,6 @@ public:
 	void LoadNewMap(char *m_mapDataFile);
 
 private:
-	std::vector<Map> m_maps;
+	std::vector<Map*> m_maps;
 };
 #endif

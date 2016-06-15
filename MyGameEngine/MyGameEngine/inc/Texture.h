@@ -20,9 +20,9 @@ public:
 	//a_textureSize,	The size of the image on screen, if 0 the original image size will be loaded
 	//a_portionSize,	The size of the section loaded in, if 0 the original image size will load
 	//a_pos,		The position of the texture from the middle
-	//a_textCoord,	Top left of the portion being loaded
-	Texture(char *a_fileName, glm::vec2 a_quadSize, glm::vec2 a_portionSize, glm::vec3 a_pos, glm::vec2 a_textCoord);
-	Texture(Texture *a_texture, glm::vec2 a_quadSize, glm::vec2 a_portionSize, glm::vec3 a_pos, glm::vec2 a_textCoord);
+	//a_topLeftPx,	Top left of the portion being loaded, based on the textures original size
+	Texture(char *a_fileName, glm::vec2 a_quadSize, glm::vec2 a_portionSize, glm::vec3 a_pos, glm::vec2 a_topLeftPx);
+	Texture(Texture *a_texture, glm::vec2 a_quadSize, glm::vec2 a_portionSize, glm::vec3 a_pos, glm::vec2 a_topLeftPx);
 	~Texture();
 
 	//vars
@@ -31,7 +31,7 @@ public:
 	glm::vec2 m_portionSize;		//The size of the portion of image being loadded in. e.g. only 30px,30px of a 100px,100px image
 	glm::vec2 m_originalImageSize;	//The original size of the image
 	glm::vec3 m_pos;				//The Textures Pos
-	glm::vec2 m_textureCoord;		//The Textures Top left, defaul: (0,1)
+	glm::vec2 m_topLeftPx;			//The Textures Top left point in pixels, defaul: (0,0)
 
 	glm::vec2 m_textCoordTL;	//Top Left Texture Coordinates
 	glm::vec2 m_textCoordTR;	//Top Right Texture Coordinates
