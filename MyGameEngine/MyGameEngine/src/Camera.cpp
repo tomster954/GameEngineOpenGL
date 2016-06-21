@@ -89,10 +89,10 @@ void Camera::KeyInputHandling()
 	float rotationSpeed = 1 * m_dt;
 
 	//move camera with WASD
-	if (glfwGetKey(m_pWindow, GLFW_KEY_W) == GLFW_PRESS)
+	if (glfwGetKey(m_pWindow, GLFW_KEY_W) == GLFW_PRESS && !glfwGetKey(m_pWindow, GLFW_KEY_LEFT_CONTROL) == GLFW_PRESS)
 		m_cameraPosition += speed * m_up;
 
-	if (glfwGetKey(m_pWindow, GLFW_KEY_S) == GLFW_PRESS)
+	if (glfwGetKey(m_pWindow, GLFW_KEY_S) == GLFW_PRESS && !glfwGetKey(m_pWindow, GLFW_KEY_LEFT_CONTROL) == GLFW_PRESS)
 		m_cameraPosition += speed * -m_up;
 	
 	if (glfwGetKey(m_pWindow, GLFW_KEY_A) == GLFW_PRESS)
@@ -100,6 +100,13 @@ void Camera::KeyInputHandling()
 
 	if (glfwGetKey(m_pWindow, GLFW_KEY_D) == GLFW_PRESS)
 		m_cameraPosition += glm::normalize(glm::cross(m_direction, m_up)) * speed;
+
+	//move z
+	if (glfwGetKey(m_pWindow, GLFW_KEY_W) == GLFW_PRESS && glfwGetKey(m_pWindow, GLFW_KEY_LEFT_CONTROL) == GLFW_PRESS)
+		m_cameraPosition += speed * m_direction;
+
+	if (glfwGetKey(m_pWindow, GLFW_KEY_S) == GLFW_PRESS && glfwGetKey(m_pWindow, GLFW_KEY_LEFT_CONTROL) == GLFW_PRESS)
+		m_cameraPosition += speed * -m_direction;
 
 	float cameraRotSpeed = 100 * m_dt;
 	//camera rotation off arrow keys

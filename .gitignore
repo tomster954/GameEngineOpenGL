@@ -4,3 +4,5 @@ MyGameEngine/Debug/
 *.user
 MyGameEngine/MyGameEngine/Release/
 MyGameEngine/Release/
+*.psess
+*.vsp

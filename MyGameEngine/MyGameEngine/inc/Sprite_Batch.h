@@ -5,7 +5,7 @@
 
 #ifndef SPRITE_BATCH
 #define SPRITE_BATCH
-#include <list>
+#include <vector>
 
 #include "Texture.h"
 
@@ -22,6 +22,6 @@ public:
 	void DrawSprite(Texture *a_texture);
 
 private:
-	std::list<Texture*> m_textures;
+	std::vector<Texture*> m_textures;
 };
 #endif

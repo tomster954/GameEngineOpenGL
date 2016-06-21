@@ -37,7 +37,6 @@ public:
 	glm::vec2 m_textCoordTR;	//Top Right Texture Coordinates
 	glm::vec2 m_textCoordBR;	//Bottom Left Texture Coordinates
 	glm::vec2 m_textCoordBL;	//Bottom Right Texture Coordinates
-
 private:
 	void GetOriginalImageSize();
 	void CalculateTextCoords();

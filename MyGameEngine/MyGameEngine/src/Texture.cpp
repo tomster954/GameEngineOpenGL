@@ -83,16 +83,18 @@ void Texture::GetOriginalImageSize()
 
 void Texture::CalculateTextCoords()
 {
+	//TODO: try more accurate calulations when it comes to the text coords to stop those black lines6uh-
 	//Confusing because images are 0,0 at the top left and opengl is 0,0 at bottom left :'(
+
 	m_textCoordTL.x = m_topLeftPx.x / m_originalImageSize.x;
 	m_textCoordBL.y = m_topLeftPx.y / m_originalImageSize.y;
 
-	m_textCoordTR.x = (m_topLeftPx.x + m_portionSize.x) / m_originalImageSize.x;
+	m_textCoordTR.x = (m_topLeftPx.x + m_portionSize.x - 0.5f) / m_originalImageSize.x;
 	m_textCoordBR.y = m_topLeftPx.y / m_originalImageSize.y;
 
-	m_textCoordBR.x = (m_topLeftPx.x + m_portionSize.x) / m_originalImageSize.x;
-	m_textCoordTR.y = (m_topLeftPx.y + m_portionSize.y) / m_originalImageSize.y;
+	m_textCoordBR.x = (m_topLeftPx.x + m_portionSize.x - 0.5f) / m_originalImageSize.x;
+	m_textCoordTR.y = (m_topLeftPx.y + m_portionSize.y - 0.5f) / m_originalImageSize.y;
 
 	m_textCoordBL.x = m_topLeftPx.x / m_originalImageSize.x;
-	m_textCoordTL.y = (m_topLeftPx.y + m_portionSize.y) / m_originalImageSize.y;
+	m_textCoordTL.y = (m_topLeftPx.y + m_portionSize.y - 0.5f) / m_originalImageSize.y;
 }

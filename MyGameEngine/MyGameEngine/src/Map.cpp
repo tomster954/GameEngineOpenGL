@@ -99,7 +99,7 @@ void Map::LoadTiles()
 		}
 			
 		//setting up the next tiles vars
-		glm::vec2 quadSize = glm::vec2(m_tileSet.tileWidth, m_tileSet.tileHeight);
+		glm::vec2 quadSize = glm::vec2(m_map_Data.tileWidth, m_map_Data.tileHeight);
 		glm::vec2 portionSize = glm::vec2(m_tileSet.tileWidth, m_tileSet.tileHeight);
 		glm::vec2 topLeftPx = FindTileTopLeft(tileID);
 
@@ -171,7 +171,7 @@ void Map::SortMapData()
 	std::string filelocation = "./resources/Maps/";
 	filelocation.append(FindDataBetween("image source=\"", "\"", &m_map_Data.tag_image, 0));
 
-	m_tileSet.m_texture = new Texture(_strdup(filelocation.c_str()), glm::vec2(0), glm::vec2(0), glm::vec3(0, 0, -500), glm::vec2(0, 1));
+	m_tileSet.m_texture = new Texture(_strdup(filelocation.c_str()), glm::vec2(0), glm::vec2(0), glm::vec3(0, 0, -500), glm::vec2(0, 0));
 }
 
 std::string Map::FindDataBetween(std::string a_start, std::string a_end, std::string *a_file, bool a_includeSearchedWords)
@@ -213,6 +213,7 @@ glm::vec2 Map::FindTileTopLeft(int a_tileID)
 
 	pos.x += m_tileSet.tileMargin;
 	pos.x += ((col - 1) * m_tileSet.tileWidth) + ((col - 1) * m_tileSet.tileSpacing);
+	pos.x += 0.5f; //because the texel coordinate is the middle of a pixel
 	//------------------------------------
 
 	//Y
@@ -222,7 +223,6 @@ glm::vec2 Map::FindTileTopLeft(int a_tileID)
 	
 	pos.y += m_tileSet.tileMargin;
 	pos.y += (row * m_tileSet.tileHeight) + (row * m_tileSet.tileSpacing);
-	
 
 	//------------------------------------
 
