@@ -8,6 +8,7 @@
 #include "glm/glm.hpp"
 
 #include <vector>
+class Application;
 class Sprite_Batch;
 class Texture;
 class Tile;
@@ -41,13 +42,13 @@ struct MapData
 class Map
 {
 public:
-	Map(char *a_mapDataFile);
+	Map(char *a_mapDataFile, Application *a_app);
 	~Map();
 
 	void Load(char *a_mapDataFile);
 
 	//Update
-	void Update();
+	void Update(float a_dt);
 
 	//Draws this specific map
 	void Draw(Sprite_Batch *a_pSB);
@@ -58,6 +59,10 @@ public:
 private:
 	void ReadMapData(char *a_mapDataFile);		//Reads in the map file 
 	void SortMapData();							//Reads vars from map file like tile width e.g.
+	void FindVisibleTiles();
+
+	Application *m_app;
+
 	std::string FindDataBetween(std::string a_start, std::string a_end, std::string *a_file, bool a_includeSearchedWords);	//find the word and returns the following characters
 
 	glm::vec2 FindTileTopLeft(int a_tileID);	//Uses the tile id to find the top left of that tile on the tile sheet
@@ -67,5 +72,6 @@ private:
 	TileSet m_tileSet;
 	
 	std::vector<std::vector<Tile*>> m_mapTiles;	//All the tiles for this map
+	std::vector<Tile*> m_visibleMapTiles;		//All the tiles for this map
 };
 #endif

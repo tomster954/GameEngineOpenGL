@@ -29,6 +29,7 @@ public:
 
 	void Draw(Sprite_Batch *a_SB);
 
+	glm::vec3 m_worldPos;		//where this tile sits in the world
 private:
 	Texture *m_textureMap;		//Tile Texture of Tile sheet with texture coords
 	Texture *m_tileTexture;		//The texture of this tile
@@ -37,7 +38,6 @@ private:
 	glm::vec2 m_quadSize;		//The images size on screen in game
 	glm::vec2 m_portionSize;	//The portion of image being loadded in. e.g. only 30px,30px of a 100px,100px image
 	glm::vec2 m_topLeftPx;		//The top left position of the tile in pixels on the tile sheet
-	glm::vec3 m_worldPos;		//where this tile sits in the world
 
 };
 #endif

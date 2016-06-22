@@ -46,25 +46,27 @@ m_stateManager(State_Manager()),
 m_camera(Camera())
 {
 	//Initialise time values
-	m_time		= 0.0f;
-	m_dt		= 0.0f;
-	m_prevTime	= 0.0f;
+	m_time = 0.0f;
+	m_dt = 0.0f;
+	m_prevTime = 0.0f;
 
 	//Initialise GLFW
 	InitialiseGLFW();
-
-	//Initialise map manager and load a map
-	m_mapManager = new Map_Manager();
-	m_mapManager->LoadNewMap("./Resources/maps/map1_data.tmx");
-
-	//Add States to the State Manager
-	m_stateManager.SetState("Play_State", new Play_State(this));
-	m_stateManager.PushState("Play_State");
 
 	//Initialise Camera
 	glm::vec3 m_cameraPos = glm::vec3(0, 0, 250);
 	glm::vec3 m_direction = glm::vec3(0, 0, -1);
 	m_camera.Initialise(m_cameraPos, m_direction, m_pWindow);
+
+	//Initialise map manager and load a map
+	m_mapManager = new Map_Manager(this);
+	m_mapManager->LoadNewMap("./Resources/maps/map1_data.tmx");
+	m_mapManager->SetMap(MAP1);
+
+	//Add States to the State Manager
+	m_stateManager.SetState("Play_State", new Play_State(this));
+	m_stateManager.PushState("Play_State");
+
 }
 
 Application::~Application()

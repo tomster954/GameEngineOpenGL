@@ -7,9 +7,13 @@
 
 #include "Sprite_Batch.h"
 #include "Tile.h"
+#include "Application.h"
+#include "Camera.h"
 
-Map::Map(char *a_mapDataFile)
+Map::Map(char *a_mapDataFile, Application*a_app)
 {
+	m_app = a_app;
+
 	m_map_Data.entireFile = "";
 	m_map_Data.tag_Map = "";
 	m_map_Data.tag_tileset = "";
@@ -33,25 +37,34 @@ void Map::Load(char *a_mapDataFile)
 {
 	ReadMapData(a_mapDataFile);
 	SortMapData();
-
 	LoadTiles();
+
+	m_visibleMapTiles.resize(20, new Tile());
 }
 
-void Map::Update()
+void Map::Update(float a_dt)
 {
-
+	FindVisibleTiles();
 }
 
 void Map::Draw(Sprite_Batch *a_SB)
 {	
 	//loops rows
-	for (int i = 0; i < m_map_Data.mapHeight; i++)
+	//for (int i = 0; i < m_mapTiles.size(); i++)
+	//{
+	//	for (int j = 0; j < m_mapTiles.size(); j++)
+	//	{
+	//		//todo only draw tiles on screen
+	//		if (m_mapTiles[i][j] == NULL)
+	//			continue;
+	//
+	//		m_mapTiles[i][j]->Draw(a_SB);
+	//	}
+	//}
+
+	for (int i = 0; i < m_visibleMapTiles.size(); i++)
 	{
-		for (int j = 0; j < m_map_Data.mapWidth; j++)
-		{
-			//todo only draw tiles on screen
-			m_mapTiles[i][j]->Draw(a_SB);
-		}
+		m_visibleMapTiles[i]->Draw(a_SB);
 	}
 }
 
@@ -103,11 +116,14 @@ void Map::LoadTiles()
 		glm::vec2 portionSize = glm::vec2(m_tileSet.tileWidth, m_tileSet.tileHeight);
 		glm::vec2 topLeftPx = FindTileTopLeft(tileID);
 
-		//Makes the middle of the map the middle of the screen
+		//moves the camera to the middle of the map
 		float x, y;
 		x = m_map_Data.mapWidth * portionSize.x / 2;
 		y = m_map_Data.mapHeight * portionSize.y / 2;
-		glm::vec3 worldPos = glm::vec3(quadSize.x * col - x, -quadSize.y * row + y, 0);
+		m_app->GetCamera()->SetPosition(glm::vec3(x, -y, m_app->GetCamera()->GetPosition().z));
+
+		//Tiles position
+		glm::vec3 worldPos = glm::vec3(quadSize.x * col, -quadSize.y * row - quadSize.y, 0);
 
 		//creat a new tile and add it to the other tiles
 		Tile *tile = new Tile();
@@ -227,4 +243,41 @@ glm::vec2 Map::FindTileTopLeft(int a_tileID)
 	//------------------------------------
 
 	return pos;
+}
+
+void Map::FindVisibleTiles()
+{
+	m_visibleMapTiles.clear();
+	int centreTileRow, centreTileCol;
+	centreTileRow = 0;
+	centreTileCol = 0;
+
+	//finding tile nearest camera/player
+	centreTileCol = m_app->GetCamera()->GetPosition().x / m_map_Data.tileWidth;
+	centreTileRow = -m_app->GetCamera()->GetPosition().y / m_map_Data.tileHeight;
+
+	//TODO Find Surrounding Tiles
+	int searchsize = 10;
+
+	for (int row = centreTileRow - searchsize; row < centreTileRow + searchsize; row++)
+	{
+		//break if we have no rows left
+		if (row >= m_map_Data.mapHeight)
+			break;
+		//if the row is below 0 just continue
+		if (row < 0 )
+			continue;
+
+		for (int col = centreTileCol - searchsize; col < centreTileCol + searchsize; col++)
+		{
+			//break if we have no cols left
+			if (col >= m_map_Data.mapWidth)
+				break;
+			//Check col is valid
+			if (col < 0)
+				continue;
+			
+			m_visibleMapTiles.push_back(m_mapTiles[row][col]);
+		}
+	}
 }

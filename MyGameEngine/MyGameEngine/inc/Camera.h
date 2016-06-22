@@ -22,11 +22,14 @@ public:
 
 	void KeyInputHandling();
 	void MouseInputHandling();
+	void SetPosition(glm::vec3 a_pos){ m_cameraPosition = a_pos; }
+	glm::vec3 GetPosition(){ return m_cameraPosition; }
 
+	glm::vec3 m_cameraPosition;
 private:
 	GLFWwindow *m_pWindow;
 
-	glm::vec3 m_cameraPosition;
+
 	glm::vec3 m_direction;
 	glm::vec3 m_up;
 	glm::vec3 m_right;

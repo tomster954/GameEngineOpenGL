@@ -25,7 +25,27 @@ public:
 	Texture(Texture *a_texture, glm::vec2 a_quadSize, glm::vec2 a_portionSize, glm::vec3 a_pos, glm::vec2 a_topLeftPx);
 	~Texture();
 
+	//Getters
+	GLuint GetTextureID(){ return m_textureID; }
+	glm::vec2 GetQuadSize(){ return m_quadSize; }
+	glm::vec2 GetPortionSize(){ return m_portionSize; }
+	glm::vec3 GetPosition(){ return m_pos; }
+	glm::vec2 GetTopLeftPixel(){ return m_topLeftPx; }
+	glm::mat2x4 GetTextureCoords() { return glm::mat2x4(m_textCoordTL.x, m_textCoordTL.y, 
+														m_textCoordTR.x, m_textCoordTR.y, 
+														m_textCoordBR.x, m_textCoordBR.y,
+														m_textCoordBL.x, m_textCoordBL.y );} //Top left, Top right, Bottom right, Bottom left
+
+	bool IsDrawingFromCentre(){ return m_drawFromCentre; }
+	//Setters
+	void DrawFromCentre(bool a_drawFromCentre){ m_drawFromCentre = a_drawFromCentre; }
+	void SetPosition(glm::vec3 a_pos){ m_pos = a_pos; };
+private:
+	void GetOriginalImageSize();
+	void CalculateTextCoords();
+
 	//vars
+	bool m_drawFromCentre;
 	GLuint m_textureID;				//The textures ID
 	glm::vec2 m_quadSize;			//The images size on screen in game
 	glm::vec2 m_portionSize;		//The size of the portion of image being loadded in. e.g. only 30px,30px of a 100px,100px image
@@ -37,8 +57,5 @@ public:
 	glm::vec2 m_textCoordTR;	//Top Right Texture Coordinates
 	glm::vec2 m_textCoordBR;	//Bottom Left Texture Coordinates
 	glm::vec2 m_textCoordBL;	//Bottom Right Texture Coordinates
-private:
-	void GetOriginalImageSize();
-	void CalculateTextCoords();
 };
 #endif

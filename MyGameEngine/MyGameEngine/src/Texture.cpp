@@ -6,6 +6,7 @@
 
 Texture::Texture(char *a_fileName, glm::vec2 a_quadSize, glm::vec2 a_portionSize, glm::vec3 a_pos, glm::vec2 a_topLeftPx)
 {
+	m_drawFromCentre = false;
 	m_textureID = 0;
 	m_quadSize = a_quadSize;
 	m_portionSize = a_portionSize;
@@ -49,6 +50,7 @@ Texture::Texture(char *a_fileName, glm::vec2 a_quadSize, glm::vec2 a_portionSize
 Texture::Texture(Texture *a_texture, glm::vec2 a_quadSize, glm::vec2 a_portionSize, glm::vec3 a_pos, glm::vec2 a_topLeftPx)
 {
 	//settting this texture vars
+	m_drawFromCentre = false;
 	m_textureID		= a_texture->m_textureID;
 	m_quadSize		= a_quadSize;
 	m_portionSize	= a_portionSize;
@@ -83,18 +85,18 @@ void Texture::GetOriginalImageSize()
 
 void Texture::CalculateTextCoords()
 {
-	//TODO: try more accurate calulations when it comes to the text coords to stop those black lines6uh-
-	//Confusing because images are 0,0 at the top left and opengl is 0,0 at bottom left :'(
+	glm::vec2 texelpos = m_topLeftPx;
+	texelpos.x += 0.5f; //because the texel coord is the middle of the pixel
 
-	m_textCoordTL.x = m_topLeftPx.x / m_originalImageSize.x;
-	m_textCoordBL.y = m_topLeftPx.y / m_originalImageSize.y;
+	m_textCoordTL.x = texelpos.x / m_originalImageSize.x;
+	m_textCoordTL.y = texelpos.y / m_originalImageSize.y;
 
-	m_textCoordTR.x = (m_topLeftPx.x + m_portionSize.x - 0.5f) / m_originalImageSize.x;
-	m_textCoordBR.y = m_topLeftPx.y / m_originalImageSize.y;
+	m_textCoordTR.x = (texelpos.x + m_portionSize.x - 1) / m_originalImageSize.x;
+	m_textCoordTR.y = texelpos.y / m_originalImageSize.y;
 
-	m_textCoordBR.x = (m_topLeftPx.x + m_portionSize.x - 0.5f) / m_originalImageSize.x;
-	m_textCoordTR.y = (m_topLeftPx.y + m_portionSize.y - 0.5f) / m_originalImageSize.y;
+	m_textCoordBR.x = (texelpos.x + m_portionSize.x - 1) / m_originalImageSize.x;
+	m_textCoordBR.y = (texelpos.y + m_portionSize.y - 1) / m_originalImageSize.y;
 
-	m_textCoordBL.x = m_topLeftPx.x / m_originalImageSize.x;
-	m_textCoordTL.y = (m_topLeftPx.y + m_portionSize.y - 0.5f) / m_originalImageSize.y;
+	m_textCoordBL.x = texelpos.x / m_originalImageSize.x;
+	m_textCoordBL.y = (texelpos.y + m_portionSize.y - 1) / m_originalImageSize.y;
 }

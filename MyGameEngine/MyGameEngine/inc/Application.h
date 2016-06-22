@@ -28,13 +28,13 @@ public:
 	void Update();
 	
 	Map_Manager* GetMapManager(){ return m_mapManager; };
+	Camera* GetCamera(){ return &m_camera; }
 
 	GLFWwindow* m_pWindow;
 private:
-	
+	Camera m_camera;
 	State_Manager m_stateManager;
 	Sprite_Batch m_SB;
-	Camera m_camera;
 
 	Map_Manager *m_mapManager;
 
