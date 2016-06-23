@@ -13,6 +13,7 @@ class Sprite_Batch;
 class Texture;
 class Tile;
 
+//Contains all the data for the tile set/sheet
 struct TileSet
 {
 	std::string tileSetName;
@@ -22,6 +23,7 @@ struct TileSet
 	unsigned int columns, tileCount, rows;	//amount of columns in the tile sheet and the total amount of tiles
 };
 
+//Contains all the data for the map read from file
 struct MapData
 {
 	std::string entireFile;					//Entire file of map data
@@ -29,12 +31,11 @@ struct MapData
 	std::string tag_Map;					//Th tag "<map>" in the mapta file
 	std::string tag_tileset;				//The tag "<tileset>" in the map data file
 	std::string tag_image;					//The tag "<image>" in the map data file
-
 	std::string orientation;				//orthogonal e.t.c.
+
 	int mapWidth; 
 	int mapHeight;							//Number of tiles wide/high (Not Pixles)	
-	int tileWidth;
-	int tileHeight;							//In pixels NOT THE SIZE ON TEXTURE SHEET
+	int tileWidth, tileHeight;				//The size of a map tile
 
 	std::string tileData;					//A string of all the tile IDs
 };
@@ -53,13 +54,11 @@ public:
 	//Draws this specific map
 	void Draw(Sprite_Batch *a_pSB);
 
-	//Loads all tiles for the map
-	void LoadTiles();
-
 private:
+	void LoadTiles();							//Creates and adds all the tile to the 2d vector
 	void ReadMapData(char *a_mapDataFile);		//Reads in the map file 
-	void SortMapData();							//Reads vars from map file like tile width e.g.
-	void FindVisibleTiles();
+	void SortMapData();							//Reads vars from map file like tile width e.t.c
+	void FindVisibleTiles();					//Finds the tiles on the screen
 
 	Application *m_app;
 

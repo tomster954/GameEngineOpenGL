@@ -49,19 +49,6 @@ void Map::Update(float a_dt)
 
 void Map::Draw(Sprite_Batch *a_SB)
 {	
-	//loops rows
-	//for (int i = 0; i < m_mapTiles.size(); i++)
-	//{
-	//	for (int j = 0; j < m_mapTiles.size(); j++)
-	//	{
-	//		//todo only draw tiles on screen
-	//		if (m_mapTiles[i][j] == NULL)
-	//			continue;
-	//
-	//		m_mapTiles[i][j]->Draw(a_SB);
-	//	}
-	//}
-
 	for (int i = 0; i < m_visibleMapTiles.size(); i++)
 	{
 		m_visibleMapTiles[i]->Draw(a_SB);
@@ -256,7 +243,6 @@ void Map::FindVisibleTiles()
 	centreTileCol = m_app->GetCamera()->GetPosition().x / m_map_Data.tileWidth;
 	centreTileRow = -m_app->GetCamera()->GetPosition().y / m_map_Data.tileHeight;
 
-	//TODO Find Surrounding Tiles
 	int searchsize = 10;
 
 	for (int row = centreTileRow - searchsize; row < centreTileRow + searchsize; row++)
