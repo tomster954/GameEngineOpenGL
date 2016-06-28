@@ -41,11 +41,11 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LinkIncremental>true</LinkIncremental>
-    <TargetName>./Resources/</TargetName>
+    <TargetName>./resources/</TargetName>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
-    <TargetName>./Resources/</TargetName>
+    <TargetName>./resources/</TargetName>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -91,7 +91,9 @@
     <ClCompile Include="src\Camera.cpp" />
     <ClCompile Include="src\Map.cpp" />
     <ClCompile Include="src\Map_Manager.cpp" />
-    <ClCompile Include="src\Play_State.cpp" />
+    <ClCompile Include="src\states\Map_Select.cpp" />
+    <ClCompile Include="src\states\Menu_State.cpp" />
+    <ClCompile Include="src\states\Play_State.cpp" />
     <ClCompile Include="src\State_Manager.cpp" />
     <ClCompile Include="src\Texture.cpp" />
     <ClCompile Include="src\main.cpp" />
@@ -104,7 +106,9 @@
     <ClInclude Include="inc\Camera.h" />
     <ClInclude Include="inc\Map.h" />
     <ClInclude Include="inc\Map_Manager.h" />
-    <ClInclude Include="inc\Play_State.h" />
+    <ClInclude Include="inc\states\Map_Select.h" />
+    <ClInclude Include="inc\states\Menu_State.h" />
+    <ClInclude Include="inc\states\Play_State.h" />
     <ClInclude Include="inc\State_Manager.h" />
     <ClInclude Include="inc\Texture.h" />
     <ClInclude Include="inc\Shapes.h" />

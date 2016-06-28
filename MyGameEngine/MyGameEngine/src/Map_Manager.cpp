@@ -18,12 +18,14 @@ Map_Manager::~Map_Manager()
 
 void Map_Manager::Update(float a_dt)
 {
-	m_maps[m_mapID]->Update(a_dt);
+	if (m_maps.size() > m_mapID)
+		m_maps[m_mapID]->Update(a_dt);
 }
 
 void Map_Manager::Draw(Sprite_Batch *a_SB)
 {
-	m_maps[m_mapID]->Draw(a_SB);
+	if (m_maps.size() > m_mapID)
+		m_maps[m_mapID]->Draw(a_SB);
 }
 
 void Map_Manager::LoadNewMap(char *a_mapDataFile)

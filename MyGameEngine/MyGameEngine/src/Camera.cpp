@@ -53,8 +53,6 @@ void Camera::Initialise(glm::vec3 a_pos, glm::vec3 a_direction, GLFWwindow *a_pW
 	m_cursorPos = glm::vec2(0, 0);
 	m_cursorLastPos = glm::vec2(0, 0);
 	m_rotation = 0;
-
-	AddRotation('x', m_rotation);
 }
 
 void Camera::Draw()
@@ -70,6 +68,7 @@ void Camera::Draw()
 	glMatrixMode(GL_PROJECTION);
 	glLoadIdentity();
 	gluPerspective(60, m_winRatio, 0.1, 1000);
+	//glOrtho(-m_winWidth / 2 * m_winRatio, m_winWidth / 2 * m_winRatio, -m_winHeight / 2 * m_winRatio, m_winHeight / 2 * m_winRatio, 1, -1);
 
 	//setting the look at, based off the camera's pos and dir
 	glm::vec3 facing = m_direction + m_cameraPosition;

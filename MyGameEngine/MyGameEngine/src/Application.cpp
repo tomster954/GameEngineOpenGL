@@ -6,29 +6,22 @@
 //GLEW
 #define GLEW_STATIC
 #include "glew.h"
-
 //GLU
 #include <GL/glu.h>
-
 //GLFW
 #include "glfw3.h"
-
 //GLM
 #include "glm/glm.hpp"
 
 //My includes
 #include "Camera.h"
-
-//Sprites
 #include "Sprite_Batch.h"
-
 //States
 #include "State_Manager.h"
-
+#include "States\Menu_State.h"
+#include "States\Play_State.h"
 //Maps
 #include "Map_Manager.h"
-
-#include "Play_State.h"
 
 static void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods)
 {
@@ -41,7 +34,7 @@ void error_callback(int error, const char* description)
 }
 
 Application::Application() :
-m_SB(Sprite_Batch()),
+m_SB(Sprite_Batch(this)),
 m_stateManager(State_Manager()),
 m_camera(Camera())
 {
@@ -54,16 +47,17 @@ m_camera(Camera())
 	InitialiseGLFW();
 
 	//Initialise Camera
-	glm::vec3 m_cameraPos = glm::vec3(0, 0, 250);
+	glm::vec3 m_cameraPos = glm::vec3(0, 0, 500);
 	glm::vec3 m_direction = glm::vec3(0, 0, -1);
 	m_camera.Initialise(m_cameraPos, m_direction, m_pWindow);
 
 	//Initialise map manager and load a map
 	m_mapManager = new Map_Manager(this);
-	m_mapManager->LoadNewMap("./Resources/maps/map1_data.tmx");
+	m_mapManager->LoadNewMap("./resources/maps/map1.tmx");
 	m_mapManager->SetMap(MAP1);
 
 	//Add States to the State Manager
+	m_stateManager.SetState("Menu_State", new Menu_State(this));
 	m_stateManager.SetState("Play_State", new Play_State(this));
 	m_stateManager.PushState("Play_State");
 
@@ -149,4 +143,11 @@ void Application::Update()
 	m_camera.Update(m_dt);
 
 	m_stateManager.UpdateStates(m_dt);
+}
+
+glm::vec2 Application::GetWindowSize()
+{
+	int x, y;
+	glfwGetWindowSize(m_pWindow, &x, &y);
+	return glm::vec2(x, y);
 }

@@ -12,6 +12,7 @@ Texture::Texture(char *a_fileName, glm::vec2 a_quadSize, glm::vec2 a_portionSize
 	m_portionSize = a_portionSize;
 	m_pos = a_pos;
 	m_topLeftPx = a_topLeftPx;
+	m_rotation = 0;
 
 	//Default Texture Coords
 	m_textCoordTL = glm::vec2(0, 1);
@@ -56,6 +57,7 @@ Texture::Texture(Texture *a_texture, glm::vec2 a_quadSize, glm::vec2 a_portionSi
 	m_portionSize	= a_portionSize;
 	m_pos			= a_pos;
 	m_topLeftPx		= a_topLeftPx;
+	m_rotation = 0;
 
 	m_originalImageSize.x = a_texture->m_originalImageSize.x;
 	m_originalImageSize.y = a_texture->m_originalImageSize.y;
@@ -79,8 +81,8 @@ void Texture::GetOriginalImageSize()
 	GLint w, h;
 	glGetTexLevelParameteriv(GL_TEXTURE_2D, 0, GL_TEXTURE_WIDTH, &w);
 	glGetTexLevelParameteriv(GL_TEXTURE_2D, 0, GL_TEXTURE_HEIGHT, &h);
-	m_originalImageSize.x = w;
-	m_originalImageSize.y = h;
+	m_originalImageSize.x = (float)w;
+	m_originalImageSize.y = (float)h;
 }
 
 void Texture::CalculateTextCoords()

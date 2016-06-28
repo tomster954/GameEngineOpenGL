@@ -9,10 +9,13 @@
 
 #include "Texture.h"
 
+#include "glm/glm.hpp"
+class Application;
+
 class Sprite_Batch
 {
 public:
-	Sprite_Batch();
+	Sprite_Batch(Application *a_pApp);
 	~Sprite_Batch();
 
 	//This is called once at the end of main draw function
@@ -22,6 +25,8 @@ public:
 	void DrawSprite(Texture *a_texture);
 
 private:
+	Application *m_pApp;
+	glm::vec2 m_winSize;
 	std::vector<Texture*> m_textures;
 };
 #endif

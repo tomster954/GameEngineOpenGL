@@ -22,13 +22,13 @@ class Map_Manager
 public:
 	Map_Manager(Application *a_app);
 	~Map_Manager();
-	
+
 	void Update(float a_dt);
 	void Draw(Sprite_Batch *a_SB);
 
-	void LoadNewMap(char *m_mapDataFile);
-
-	void SetMap(EMAPS a_mapID){ m_mapID = a_mapID; };
+	void FindMapFiles();								//Finds all the maps in the maps folder
+	void LoadNewMap(char *m_mapDataFile);				//loads a new map
+	void SetMap(EMAPS a_mapID){ m_mapID = a_mapID; };	//sets a specific map to be updated and drawn
 
 private:
 	Application *m_app;

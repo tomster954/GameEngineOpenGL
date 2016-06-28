@@ -1,5 +1,6 @@
 #include "Sprite_Batch.h"
 #include "Texture.h"
+#include "Application.h"
 
 #include "SOIL2.h"
 
@@ -7,8 +8,9 @@
 
 #include <list>
 
-Sprite_Batch::Sprite_Batch()
+Sprite_Batch::Sprite_Batch(Application *a_pApp)
 {
+	m_pApp = a_pApp;
 }
 
 Sprite_Batch::~Sprite_Batch()
@@ -17,6 +19,7 @@ Sprite_Batch::~Sprite_Batch()
 
 void Sprite_Batch::Draw()
 {
+	//m_winSize = m_pApp->GetWindowSize();
 	//Draw every sprite passed in this frame
 	//for (auto itr = m_textures.begin(); itr != m_textures.end(); ++itr)
 	for (int i = 0; i < m_textures.size(); i++)
@@ -47,6 +50,7 @@ void Sprite_Batch::Draw()
 		glMatrixMode(GL_MODELVIEW);
 		glLoadIdentity();
 		glTranslatef(pos.x, pos.y, pos.z);
+		glRotatef(itr->GetRotation(), 0, 0, 1);
 
 		glEnable(GL_TEXTURE_2D);
 		glBindTexture(GL_TEXTURE_2D, ID);

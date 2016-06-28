@@ -1,19 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.0" orientation="orthogonal" renderorder="right-down" width="50" height="50" tilewidth="32" tileheight="32" nextobjectid="1">
- <tileset firstgid="1" name="PC Computer - Warcraft 2 - Wasteland Tiles (1)" tilewidth="32" tileheight="32" spacing="1" tilecount="380" columns="19">
-  <image source="Tiles/PC Computer - Warcraft 2 - Wasteland Tiles (1).png" trans="ff00ff" width="626" height="659"/>
-  <tile id="333" probability="0.2"/>
-  <tile id="334" probability="0.1"/>
-  <tile id="335" probability="0.1"/>
-  <tile id="336" probability="0.1"/>
-  <tile id="337" probability="0.2"/>
-  <tile id="338" probability="0.2"/>
-  <tile id="342" probability="0.3"/>
-  <tile id="343" probability="0.3"/>
-  <tile id="344" probability="0.3"/>
-  <tile id="345" probability="0.05"/>
+<map version="1.0" orientation="orthogonal" renderorder="right-down" width="50" height="50" tilewidth="32" tileheight="32" nextobjectid="4">
+ <tileset firstgid="1" name="tileset1" tilewidth="32" tileheight="32" spacing="1" tilecount="380" columns="19">
+  <image source="Tiles/tileset1.png" trans="ff00ff" width="626" height="659"/>
  </tileset>
- <layer name="Tile Layer 1" width="50" height="50">
+ <layer name="Ground" width="50" height="50">
   <data encoding="csv">
 112,297,298,297,297,299,298,298,298,297,298,297,298,297,298,297,298,299,298,298,298,298,298,298,298,297,298,298,299,299,298,298,298,298,297,298,299,299,299,299,299,297,299,297,298,298,297,297,298,299,
 297,171,297,299,298,298,297,297,297,297,297,297,297,297,298,298,298,299,297,298,298,298,299,297,298,299,299,298,299,299,299,297,298,299,298,297,299,297,297,298,299,297,299,297,298,297,298,297,299,298,
@@ -67,4 +57,8 @@
 299,297,297,297,298,299,297,297,298,299,299,299,298,298,299,299,298,297,297,299,297,297,297,298,298,298,298,297,297,298,298,298,298,297,299,297,298,299,299,298,299,299,297,298,298,299,299,297,297,297
 </data>
  </layer>
+ <objectgroup name="spawns">
+  <object id="1" name="playerspawn" x="448" y="384" width="96" height="96"/>
+  <object id="2" name="enemyspawn" x="1088" y="352" width="160" height="160"/>
+ </objectgroup>
 </map>

@@ -29,7 +29,8 @@ public:
 	
 	Map_Manager* GetMapManager(){ return m_mapManager; };
 	Camera* GetCamera(){ return &m_camera; }
-
+	glm::vec2 GetWindowSize();
+	
 	GLFWwindow* m_pWindow;
 private:
 	Camera m_camera;

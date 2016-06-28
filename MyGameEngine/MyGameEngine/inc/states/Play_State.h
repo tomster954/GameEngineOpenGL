@@ -7,7 +7,6 @@
 #define PLAY_STATE
 #include "State_Manager.h"
 
-class Shapes;
 class Texture;
 class Map_Manager;
 class Application;
@@ -24,8 +23,6 @@ public:
 private:
 	virtual void Initialise();
 	void LoadMap();
-
-	Shapes *m_shapes;
 	Texture *m_texture1;
 	Application *m_pApp;
 };
