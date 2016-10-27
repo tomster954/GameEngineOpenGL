@@ -248,7 +248,7 @@ glm::vec2 Map::FindTileTopLeft(int a_tileID)
 	//------------------------------------
 	int col = a_tileID;
 
-	//finding the column that this tile sits
+	//finding the column that this tile sits by - the size of cols from the id
 	for (col; col > m_tileSet.columns;)
 		col -= m_tileSet.columns;
 

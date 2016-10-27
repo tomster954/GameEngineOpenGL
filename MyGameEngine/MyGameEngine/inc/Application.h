@@ -27,9 +27,11 @@ public:
 	void Draw();
 	void Update();
 	
-	Map_Manager* GetMapManager(){ return m_mapManager; };
+	Map_Manager* GetMapManager(){ return m_mapManager; }
 	Camera* GetCamera(){ return &m_camera; }
 	glm::vec2 GetWindowSize();
+	
+	State_Manager* GetStateManager(){ return &m_stateManager; }
 	
 	GLFWwindow* m_pWindow;
 private:

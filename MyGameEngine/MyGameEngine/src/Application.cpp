@@ -137,8 +137,8 @@ void Application::Draw()
 void Application::Update()
 {
 	m_time = glfwGetTime();
-	m_dt = m_time - m_prevTime;
-	m_prevTime = m_time;
+	m_dt = (float)m_time - m_prevTime;
+	m_prevTime = (float)m_time;
 
 	m_camera.Update(m_dt);
 

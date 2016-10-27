@@ -23,7 +23,7 @@ public:
 private:
 	virtual void Initialise();
 	void LoadMap();
-	Texture *m_texture1;
+	Texture *m_playerTexture;
 	Application *m_pApp;
 };
 #endif
