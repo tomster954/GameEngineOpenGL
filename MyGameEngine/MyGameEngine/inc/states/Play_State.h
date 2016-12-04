@@ -10,6 +10,7 @@
 class Texture;
 class Map_Manager;
 class Application;
+class Base_Character;
 
 class Play_State : public IState
 {
@@ -24,6 +25,9 @@ private:
 	virtual void Initialise();
 	void LoadMap();
 	Texture *m_playerTexture;
+	Texture *m_testTextue;
+
 	Application *m_pApp;
+	Base_Character *m_player;
 };
 #endif

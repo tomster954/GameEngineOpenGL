@@ -5,15 +5,19 @@
 
 #ifndef CAMERA
 #define CAMERA
+
+#include "base classes\Base_Object.h"
+
 //GLM
 #include "glm/glm.hpp"
 
 struct GLFWwindow;
-class Camera
+class Camera : public Base_Object
 {
 public:
 	Camera();
 	~Camera();
+
 	void Initialise(glm::vec3 a_pos, glm::vec3 a_direction, GLFWwindow *a_pWindow);
 	void Draw();
 	void Update(float a_dt);
@@ -23,16 +27,15 @@ public:
 	void KeyInputHandling();
 	void MouseInputHandling();
 
-	//Getters
-	void SetPosition(glm::vec3 a_pos){ m_cameraPosition = a_pos; }
-
 	//Setters
-	glm::vec3 GetPosition(){ return m_cameraPosition; }
+	void MoveTo(glm::vec3 a_pos){ m_location = a_pos; }
+		
+	//Getters - now inherited
+	glm::vec3 GetPosition(){ return m_location; }
 
 private:
 	GLFWwindow *m_pWindow;
 
-	glm::vec3 m_cameraPosition;
 	glm::vec3 m_direction;
 	glm::vec3 m_up;
 	glm::vec3 m_right;

@@ -19,9 +19,17 @@ Sprite_Batch::~Sprite_Batch()
 
 void Sprite_Batch::Draw()
 {
-	//m_winSize = m_pApp->GetWindowSize();
+	//for transperant textures (works atm)
+	//----------------------------------------------------------------------------
+	glEnable(GL_DEPTH_TEST);
+	glEnable(GL_BLEND);
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+	glTexEnvi(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
+	glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
+	glDepthMask(GL_FALSE);
+	//----------------------------------------------------------------------------
+
 	//Draw every sprite passed in this frame
-	//for (auto itr = m_textures.begin(); itr != m_textures.end(); ++itr)
 	for (int i = 0; i < m_textures.size(); i++)
 	{
 		Texture *itr = m_textures[i];

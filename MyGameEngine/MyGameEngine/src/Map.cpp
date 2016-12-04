@@ -185,7 +185,7 @@ void Map::LoadTiles()
 		float x, y;
 		x = m_map_Data.mapWidth * portionSize.x / 2;
 		y = m_map_Data.mapHeight * portionSize.y / 2;
-		m_app->GetCamera()->SetPosition(glm::vec3(x, -y, m_app->GetCamera()->GetPosition().z));
+		m_app->GetCamera()->MoveTo(glm::vec3(x, -y, m_app->GetCamera()->GetPosition().z));
 
 		//Tiles position
 		glm::vec3 worldPos = glm::vec3(quadSize.x * col, -quadSize.y * row - quadSize.y, 0);

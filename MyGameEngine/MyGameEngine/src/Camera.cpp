@@ -15,7 +15,7 @@
 
 #include <cmath>
 
-Camera::Camera()
+Camera::Camera() : Base_Object()
 {
 }
 
@@ -27,7 +27,8 @@ void Camera::Initialise(glm::vec3 a_pos, glm::vec3 a_direction, GLFWwindow *a_pW
 {
 	//vars
 	m_pWindow = a_pWindow;
-	m_cameraPosition = a_pos;
+	//m_cameraPosition = a_pos;
+	m_location = a_pos;
 	m_direction = a_direction;
 
 	float aaa[9] =
@@ -71,15 +72,15 @@ void Camera::Draw()
 	//glOrtho(-m_winWidth / 2 * m_winRatio, m_winWidth / 2 * m_winRatio, -m_winHeight / 2 * m_winRatio, m_winHeight / 2 * m_winRatio, 1, -1);
 
 	//setting the look at, based off the camera's pos and dir
-	glm::vec3 facing = m_direction + m_cameraPosition;
-	gluLookAt(m_cameraPosition.x, m_cameraPosition.y, m_cameraPosition.z, facing.x, facing.y, facing.z, 0, 1, 0);
+	glm::vec3 facing = m_direction + m_location;
+	gluLookAt(m_location.x, m_location.y, m_location.z, facing.x, facing.y, facing.z, 0, 1, 0);
 }
 
 void Camera::Update(float a_dt)
 {
 	m_dt = a_dt;
 	KeyInputHandling();
-	MouseInputHandling();
+	//MouseInputHandling();
 }
 
 void Camera::KeyInputHandling()
@@ -89,23 +90,23 @@ void Camera::KeyInputHandling()
 
 	//move camera with WASD
 	if (glfwGetKey(m_pWindow, GLFW_KEY_W) == GLFW_PRESS && !glfwGetKey(m_pWindow, GLFW_KEY_LEFT_CONTROL) == GLFW_PRESS)
-		m_cameraPosition += speed * m_up;
-
+		m_location += speed * m_up;
+	
 	if (glfwGetKey(m_pWindow, GLFW_KEY_S) == GLFW_PRESS && !glfwGetKey(m_pWindow, GLFW_KEY_LEFT_CONTROL) == GLFW_PRESS)
-		m_cameraPosition += speed * -m_up;
+		m_location += speed * -m_up;
 	
 	if (glfwGetKey(m_pWindow, GLFW_KEY_A) == GLFW_PRESS)
-		m_cameraPosition -= glm::normalize(glm::cross(m_direction, m_up)) * speed;
-
+		m_location -= glm::normalize(glm::cross(m_direction, m_up)) * speed;
+	
 	if (glfwGetKey(m_pWindow, GLFW_KEY_D) == GLFW_PRESS)
-		m_cameraPosition += glm::normalize(glm::cross(m_direction, m_up)) * speed;
-
+		m_location += glm::normalize(glm::cross(m_direction, m_up)) * speed;
+	
 	//move z
 	if (glfwGetKey(m_pWindow, GLFW_KEY_W) == GLFW_PRESS && glfwGetKey(m_pWindow, GLFW_KEY_LEFT_CONTROL) == GLFW_PRESS)
-		m_cameraPosition += speed * m_direction;
-
+		m_location += speed * m_direction;
+	
 	if (glfwGetKey(m_pWindow, GLFW_KEY_S) == GLFW_PRESS && glfwGetKey(m_pWindow, GLFW_KEY_LEFT_CONTROL) == GLFW_PRESS)
-		m_cameraPosition += speed * -m_direction;
+		m_location += speed * -m_direction;
 
 	float cameraRotSpeed = 100 * m_dt;
 	//camera rotation off arrow keys
