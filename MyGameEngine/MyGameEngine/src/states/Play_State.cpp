@@ -43,6 +43,11 @@ void Play_State::Update(float a_dt)
 	//call the players update function
 	m_player->Update(a_dt);
 
+	//sets the camera to follow the player position
+	glm::vec3 cameraPos = glm::vec3(m_player->GetCurrentLocation().x, m_player->GetCurrentLocation().y, m_player->GetCurrentLocation().z + 500);
+
+	m_pApp->GetCamera()->MoveTo(cameraPos);
+
 	//sets the texture to the cameras position
 	//m_playerTexture->SetPosition(glm::vec3(m_pApp->GetCamera()->GetPosition().x, m_pApp->GetCamera()->GetPosition().y, 1));
 	
@@ -68,5 +73,5 @@ void Play_State::Draw(Sprite_Batch *a_SB)
 	//call the players draw function
 	m_player->Draw(a_SB);
 	
-	a_SB->DrawSprite(m_testTextue);
+	//a_SB->DrawSprite(m_testTextue);
 }

@@ -21,8 +21,8 @@ public:
 	void Draw(Sprite_Batch *a_SB);
 	void Update(float a_dt);
 
-	void HandleInput();
-
+	void HandleInput(float a_dt);
+	glm::vec3 GetCurrentLocation(){ return m_location; }
 	//void MoveTo(glm::vec3 a_newPosition);
 
 protected:
@@ -31,7 +31,7 @@ protected:
 	glm::vec3 m_up;
 	glm::vec3 m_right;
 
-	float m_speed = 10;
+	float m_speed = 100;
 	float m_health = 100;
 	Texture *m_playerTexture;
 };
