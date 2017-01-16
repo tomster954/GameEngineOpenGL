@@ -19,14 +19,14 @@ Sprite_Batch::~Sprite_Batch()
 
 void Sprite_Batch::Draw()
 {
-	//for transperant textures (works atm)
+	//for transperant textures (works but results in black screen when resizing window)
 	//----------------------------------------------------------------------------
-	glEnable(GL_DEPTH_TEST);
-	glEnable(GL_BLEND);
-	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-	glTexEnvi(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
-	glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
-	glDepthMask(GL_FALSE);
+	//glEnable(GL_DEPTH_TEST);
+	//glEnable(GL_BLEND);
+	//glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+	//glTexEnvi(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
+	//glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
+	//glDepthMask(GL_FALSE);
 	//----------------------------------------------------------------------------
 
 	//Draw every sprite passed in this frame
